@@ -38,35 +38,33 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-20 text-white bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800">
-        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="mb-6 text-5xl font-bold leading-tight md:text-6xl">
-              Discover Amazing
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-                Events
-              </span>
-            </h1>
-            <p className="max-w-3xl mx-auto mb-8 text-xl text-blue-100 md:text-2xl">
-              Join thousands of people discovering and attending incredible events. From conferences to concerts, find your next unforgettable experience.
-            </p>
-            <div className="flex flex-col justify-center gap-4 sm:flex-row">
-              <Link
-                to="/events"
-                className="px-8 py-4 text-lg font-semibold text-blue-600 transition-all duration-300 bg-white rounded-lg shadow-lg hover:bg-gray-100 hover:scale-105"
-              >
-                Explore Events
-              </Link>
-              <Link
-                to="/register"
-                className="px-8 py-4 text-lg font-semibold text-white transition-all duration-300 bg-transparent border-2 border-white rounded-lg hover:bg-white hover:text-blue-600"
-              >
-                Get Started
-              </Link>
+        <section className="min-h-[110vh] flex items-center text-white bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 relative mt-0 lg:-mt-20" style={{ backgroundImage: 'url("https://static.vecteezy.com/system/resources/previews/038/817/316/non_2x/ai-generated-minimalist-image-showcasing-the-classic-form-and-elegance-of-a-black-piano-against-a-neutral-background-free-photo.jpeg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed', backgroundBlendMode: 'overlay' }}>
+          <div className="absolute inset-0 z-10 bg-black opacity-30"></div>
+          <div className="relative z-20 w-full mx-auto max-w-7xl">
+            <div className="max-w-2xl px-4 py-10 text-center sm:px-6 sm:py-12 md:py-16 md:text-left lg:py-20">
+              <h1 className="mb-4 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                Planora
+              </h1>
+              <p className="mb-6 font-sans text-base text-blue-100 sm:text-lg md:text-xl">
+                Find and join unforgettable events, from concerts to conferences.
+              </p>
+              <div className="flex flex-col justify-center gap-3 sm:flex-row sm:gap-4 md:justify-start">
+                <Link
+                  to="/events"
+                  className="px-4 py-2 font-sans text-sm font-medium text-gray-700 transition-all duration-300 bg-white rounded-md shadow sm:text-base hover:bg-gray-100 hover:scale-105"
+                >
+                  Explore
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 font-sans text-sm font-medium text-white transition-all duration-300 bg-transparent border border-white rounded-md sm:text-base hover:bg-white hover:text-gray-700 "
+                >
+                  Join
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* Features Section */}
       <section className="py-20 bg-white">

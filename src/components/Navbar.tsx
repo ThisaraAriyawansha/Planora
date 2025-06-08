@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, Menu, X, User, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
@@ -6,8 +6,20 @@ import { useAuth } from '../contexts/AuthContext';
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [scrolledHalf, setScrolledHalf] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const screenHeight = window.innerHeight;
+      setScrolledHalf(scrollY > screenHeight / 2);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -26,40 +38,42 @@ const Navbar: React.FC = () => {
     }
   };
 
+  
+
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className={`sticky top-0 z-50 shadow-lg transition-colors duration-300 ${scrolledHalf ? 'bg-white' : 'bg-transparent'}`}>
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <Calendar className="h-8 w-8 text-blue-600" />
+              <Calendar className="w-8 h-8 text-gray-900" />
               <span className="text-2xl font-bold text-gray-900">Planora</span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="items-center hidden space-x-8 md:flex">
             <Link
               to="/"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              className="px-3 py-2 text-sm font-medium text-gray-700 transition-colors rounded-md "
             >
               Home
             </Link>
             <Link
               to="/events"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              className="px-3 py-2 text-sm font-medium text-gray-700 transition-colors rounded-md "
             >
               Events
             </Link>
             <Link
               to="/about"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              className="px-3 py-2 text-sm font-medium text-gray-700 transition-colors rounded-md "
             >
               About Us
             </Link>
             <Link
               to="/contact"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              className="px-3 py-2 text-sm font-medium text-gray-700 transition-colors rounded-md "
             >
               Contact Us
             </Link>
@@ -68,13 +82,13 @@ const Navbar: React.FC = () => {
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="flex items-center px-3 py-2 space-x-2 text-sm font-medium text-gray-700 transition-colors rounded-md hover:text-blue-600"
                 >
-                  <User className="h-5 w-5" />
+                  <User className="w-5 h-5" />
                   <span>{user.name}</span>
                 </button>
                 {userMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                  <div className="absolute right-0 z-50 w-48 py-1 mt-2 bg-white rounded-md shadow-lg">
                     <Link
                       to={getDashboardPath()}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -84,9 +98,9 @@ const Navbar: React.FC = () => {
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
                     >
-                      <LogOut className="inline h-4 w-4 mr-2" />
+                      <LogOut className="inline w-4 h-4 mr-2" />
                       Logout
                     </button>
                   </div>
@@ -96,13 +110,13 @@ const Navbar: React.FC = () => {
               <div className="flex items-center space-x-4">
                 <Link
                   to="/login"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="px-3 py-2 text-sm font-medium text-gray-700 transition-colors rounded-md "
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="px-4 py-2 text-sm font-medium text-white transition-colors bg-gray-600 rounded-md "
                 >
                   Sign Up
                 </Link>
@@ -111,44 +125,44 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="flex items-center md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600"
+              className="text-gray-700 hover:text-gray-900 focus:outline-none focus:text-gray-900"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden">
+          <div className="bg-transparent md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
               <Link
                 to="/"
-                className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
+                className="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:text-blue-600"
                 onClick={() => setIsOpen(false)}
               >
                 Home
               </Link>
               <Link
                 to="/events"
-                className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
+                className="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:text-blue-600"
                 onClick={() => setIsOpen(false)}
               >
                 Events
               </Link>
               <Link
                 to="/about"
-                className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
+                className="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:text-blue-600"
                 onClick={() => setIsOpen(false)}
               >
                 About Us
               </Link>
               <Link
                 to="/contact"
-                className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
+                className="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:text-blue-600"
                 onClick={() => setIsOpen(false)}
               >
                 Contact Us
@@ -158,14 +172,14 @@ const Navbar: React.FC = () => {
                 <>
                   <Link
                     to={getDashboardPath()}
-                    className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
+                    className="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:text-blue-600"
                     onClick={() => setIsOpen(false)}
                   >
                     Dashboard
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium w-full text-left"
+                    className="block w-full px-3 py-2 text-base font-medium text-left text-gray-700 rounded-md hover:text-blue-600"
                   >
                     Logout
                   </button>
@@ -174,14 +188,14 @@ const Navbar: React.FC = () => {
                 <>
                   <Link
                     to="/login"
-                    className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium"
+                    className="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:text-blue-600"
                     onClick={() => setIsOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
                     to="/register"
-                    className="bg-blue-600 hover:bg-blue-700 text-white block px-3 py-2 rounded-md text-base font-medium"
+                    className="block px-3 py-2 text-base font-medium text-white bg-gray-600"
                     onClick={() => setIsOpen(false)}
                   >
                     Sign Up
