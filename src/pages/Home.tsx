@@ -77,8 +77,8 @@ const Home: React.FC = () => {
           </div>
 
           <div className="grid gap-8 md:grid-cols-3">
-            <div className="p-6 text-center transition-shadow rounded-xl bg-gradient-to-br from-blue-50 to-indigo-100 hover:shadow-lg">
-              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-blue-600 rounded-full">
+            <div className="p-6 text-center transition-shadow rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 hover:shadow-lg">
+              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-gray-800 rounded-full">
                 <Calendar className="w-8 h-8 text-white" />
               </div>
               <h3 className="mb-2 text-xl font-semibold text-gray-900">Easy Discovery</h3>
@@ -87,8 +87,8 @@ const Home: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-6 text-center transition-shadow rounded-xl bg-gradient-to-br from-green-50 to-emerald-100 hover:shadow-lg">
-              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-green-600 rounded-full">
+            <div className="p-6 text-center transition-shadow rounded-xl bg-gradient-to-br from-gray-100 to-stone-200 hover:shadow-lg">
+              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-stone-700">
                 <Users className="w-8 h-8 text-white" />
               </div>
               <h3 className="mb-2 text-xl font-semibold text-gray-900">Seamless Registration</h3>
@@ -97,8 +97,8 @@ const Home: React.FC = () => {
               </p>
             </div>
 
-            <div className="p-6 text-center transition-shadow rounded-xl bg-gradient-to-br from-purple-50 to-violet-100 hover:shadow-lg">
-              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-purple-600 rounded-full">
+            <div className="p-6 text-center transition-shadow rounded-xl bg-gradient-to-br from-gray-100 to-zinc-200 hover:shadow-lg">
+              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-zinc-800">
                 <Star className="w-8 h-8 text-white" />
               </div>
               <h3 className="mb-2 text-xl font-semibold text-gray-900">Quality Events</h3>
@@ -109,6 +109,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
 
       {/* Featured Events Section */}
       <section className="py-20 bg-gray-50">
