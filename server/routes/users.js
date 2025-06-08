@@ -1,9 +1,9 @@
 import express from 'express';
 import db from '../config/database.js';
 import { authenticateToken, requireRole } from '../middleware/auth.js';
+import bcrypt from 'bcrypt'; // Add bcrypt import
 
 const router = express.Router();
-const bcrypt = require('bcrypt'); // Assuming db and authenticateToken are defined elsewhere
 // Get current user's profile
 router.get('/me', authenticateToken, async (req, res) => {
   try {
@@ -70,12 +70,12 @@ router.put('/:id', authenticateToken, async (req, res) => {
     const { name, email, currentPassword, newPassword } = req.body;
     const userId = req.user.id; // From auth token
 
-    // Verify the user is updating their own profile
+    // Verify user is updating their own profile
     if (parseInt(id) !== userId) {
       return res.status(403).json({ message: 'You can only update your own profile' });
     }
 
-    // Get the current user data
+    // Get current user data
     const [users] = await db.execute('SELECT * FROM users WHERE id = ?', [id]);
     if (users.length === 0) {
       return res.status(404).json({ message: 'User not found' });
@@ -106,7 +106,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
       }
     }
 
-    // Update the user
+    // Update user
     const [result] = await db.execute(
       'UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?',
       [name || user.name, email || user.email, hashedPassword, id]
@@ -124,7 +124,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Profile update error:', error);
+    console.error('Profile update error:', error.message, error.sqlMessage);
     res.status(500).json({ message: 'Failed to update profile' });
   }
 });

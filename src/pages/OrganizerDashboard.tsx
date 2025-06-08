@@ -408,15 +408,24 @@ const OrganizerDashboard: React.FC = () => {
                         className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent md:px-4 md:py-3"
                       />
                     </div>
-                    <div>
-                      <label className="block mb-1 text-sm font-medium text-gray-700">Category</label>
-                      <input
-                        type="text"
-                        value={newEvent.category}
-                        onChange={(e) => setNewEvent({ ...newEvent, category: e.target.value })}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent md:px-4 md:py-3"
-                      />
-                    </div>
+                      <div>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Category</label>
+                        <select
+                          value={newEvent.category}
+                          onChange={(e) => setNewEvent({ ...newEvent, category: e.target.value })}
+                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent md:px-4 md:py-3"
+                        >
+                          <option value="">Select a category</option>
+                          <option value="Tech">Tech</option>
+                          <option value="Music">Music</option>
+                          <option value="Sports">Sports</option>
+                          <option value="Business">Business</option>
+                          <option value="Education">Education</option>
+                          <option value="Art">Art</option>
+                          <option value="Food">Food</option>
+                          <option value="Health">Health</option>
+                        </select>
+                      </div>
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -552,15 +561,24 @@ const OrganizerDashboard: React.FC = () => {
                         className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent md:px-4 md:py-3"
                       />
                     </div>
-                    <div>
-                      <label className="block mb-1 text-sm font-medium text-gray-700">Category</label>
-                      <input
-                        type="text"
-                        value={editEvent.category}
-                        onChange={(e) => setEditEvent({ ...editEvent, category: e.target.value })}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent md:px-4 md:py-3"
-                      />
-                    </div>
+                      <div>
+                        <label className="block mb-1 text-sm font-medium text-gray-700">Category</label>
+                        <select
+                          value={editEvent.category}
+                          onChange={(e) => setEditEvent({ ...editEvent, category: e.target.value })}
+                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent md:px-4 md:py-3"
+                        >
+                          <option value="">Select a category</option>
+                          <option value="Tech">Tech</option>
+                          <option value="Music">Music</option>
+                          <option value="Sports">Sports</option>
+                          <option value="Business">Business</option>
+                          <option value="Education">Education</option>
+                          <option value="Art">Art</option>
+                          <option value="Food">Food</option>
+                          <option value="Health">Health</option>
+                        </select>
+                      </div>
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
