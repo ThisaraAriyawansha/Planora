@@ -85,4 +85,41 @@ router.post('/login', async (req, res) => {
   }
 });
 
+
+// Update preference
+router.patch('/update-preference', async (req, res) => {
+  try {
+    const { email, preference } = req.body;
+
+    // Verify token
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    } catch (err) {
+      return res.status(401).json({ message: 'Invalid or expired token' });
+    }
+
+    // Update preference
+    const [result] = await db.execute(
+      'UPDATE users SET preference = ? WHERE email = ?',
+      [preference, email]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ message: 'Preference updated successfully' });
+  } catch (error) {
+    console.error('Preference update error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 export default router;

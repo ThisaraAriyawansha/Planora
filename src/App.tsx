@@ -14,6 +14,7 @@ import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import OrganizerDashboard from './pages/OrganizerDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import PredictCategory from './pages/PredictCategory';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/predict-category" element={<PredictCategory />} />
             <Route
               path="/dashboard"
               element={

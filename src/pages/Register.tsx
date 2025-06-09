@@ -38,8 +38,12 @@ const Register: React.FC = () => {
 
     try {
       await register(formData.email, formData.password, formData.name, formData.role);
-      navigate('/');
-    } catch (error: any) {
+if (formData.role === 'Participant') {
+navigate('/predict-category', { state: { email: formData.email } });
+      } else {
+        navigate('/');
+      }
+        } catch (error: any) {
       setError(error.response?.data?.message || 'Registration failed');
     } finally {
       setLoading(false);

@@ -82,7 +82,7 @@ const Navbar: React.FC = () => {
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center px-3 py-2 space-x-2 text-sm font-medium text-gray-700 transition-colors rounded-md hover:text-blue-600"
+                  className="flex items-center px-3 py-2 space-x-2 text-sm font-medium text-gray-700 transition-colors rounded-md "
                 >
                   <User className="w-5 h-5" />
                   <span>{user.name}</span>
