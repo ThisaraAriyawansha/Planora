@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLANORA - Category Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #1a73e8;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        form {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #444;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+            -webkit-appearance: none;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            outline: none;
+            transition: background 0.3s;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #1a73e8;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        input[type="range"]:hover {
+            background: #d0d0d0;
+        }
+        .range-value {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 1em;
+            color: #1a73e8;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+        select:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 5px rgba(26, 115, 232, 0.3);
+        }
+        button {
+            background-color: #1a73e8;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            display: block;
+            margin: 20px auto;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1557b0;
+        }
+        #progress-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        #progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        #progress-fill {
+            width: 0;
+            height: 100%;
+            background-color: #1a73e8;
+            transition: width 1.5s ease-in-out;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.3em;
+            font-weight: 500;
+            color: #333;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        #result.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>PLANORA - Predict Your Interest Category</h1>
+    <form id="predictionForm">
+        <label for="age">Age (18–100):</label>
+        <input type="range" id="age" name="age" min="18" max="100" value="18" required>
+        <span class="range-value" id="age-value">18</span>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="tech_spend">How often do you spend money on gadgets, apps, or tech products? (1=Never, 5=Very Often):</label>
+        <input type="range" id="tech_spend" name="tech_spend" min="1" max="5" value="1" required>
+        <span class="range-value" id="tech_spend-value">1</span>
+
+        <label for="music_freq">Do you listen to music or attend concerts frequently? (1=Rarely, 5=Daily):</label>
+        <input type="range" id="music_freq" name="music_freq" min="1" max="5" value="1" required>
+        <span class="range-value" id="music_freq-value">1</span>
+
+        <label for="sports_hours">How many hours per week do you spend on physical activities? (1=None, 5=10+ hours):</label>
+        <input type="range" id="sports_hours" name="sports_hours" min="1" max="5" value="1" required>
+        <span class="range-value" id="sports_hours-value">1</span>
+
+        <label for="business_interest">Are you interested in business news, stocks, or entrepreneurship? (1=Not at all, 5=Very Interested):</label>
+        <input type="range" id="business_interest" name="business_interest" min="1" max="5" value="1" required>
+        <span class="range-value" id="business_interest-value">1</span>
+
+        <label for="edu_freq">How often do you take online courses or read educational content? (1=Never, 5=Regularly):</label>
+        <input type="range" id="edu_freq" name="edu_freq" min="1" max="5" value="1" required>
+        <span class="range-value" id="edu_freq-value">1</span>
+
+        <label for="food_interest">Do you enjoy cooking or exploring new restaurants? (1=No interest, 5=Love it):</label>
+        <input type="range" id="food_interest" name="food_interest" min="1" max="5" value="1" required>
+        <span class="range-value" id="food_interest-value">1</span>
+
+        <label for="health_priority">How much do you prioritize fitness/mental health? (1=Low priority, 5=Top priority):</label>
+        <input type="range" id="health_priority" name="health_priority" min="1" max="5" value="1" required>
+        <span class="range-value" id="health_priority-value">1</span>
+
+        <button type="submit">Submit</button>
+    </form>
+    <div id="progress-container">
+        <div id="progress-bar">
+            <div id="progress-fill"></div>
+        </div>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        // Update range input values in real-time
+        const rangeInputs = document.querySelectorAll('input[type="range"]');
+        rangeInputs.forEach(input => {
+            const valueSpan = document.getElementById(`${input.id}-value`);
+            valueSpan.textContent = input.value;
+            input.addEventListener('input', () => {
+                valueSpan.textContent = input.value;
+            });
+        });
+
+        // Handle form submission with progress bar
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const progressContainer = document.getElementById('progress-container');
+            const progressFill = document.getElementById('progress-fill');
+            const resultDiv = document.getElementById('result');
+
+            // Show progress bar
+            progressContainer.style.display = 'block';
+            progressFill.style.width = '0%';
+            resultDiv.textContent = '';
+            resultDiv.classList.remove('show');
+
+            // Animate progress bar
+            setTimeout(() => { progressFill.style.width = '50%'; }, 100);
+            setTimeout(() => { progressFill.style.width = '100%'; }, 800);
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                
+                // Hide progress bar and show result
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    if (result.error) {
+                        resultDiv.textContent = `Error: ${result.error}`;
+                    } else {
+                        resultDiv.textContent = `Your favorite category is: ${result.prediction}`;
+                    }
+                    resultDiv.classList.add('show');
+                }, 1500);
+            } catch (error) {
+                progressContainer.style.display = 'none';
+                resultDiv.textContent = `Error: ${error.message}`;
+                resultDiv.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>
