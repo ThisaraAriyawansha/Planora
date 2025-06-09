@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Eye, EyeOff, Calendar, UserCheck } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Calendar } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const Register: React.FC = () => {
@@ -12,7 +12,6 @@ const Register: React.FC = () => {
     role: 'Participant'
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -38,12 +37,12 @@ const Register: React.FC = () => {
 
     try {
       await register(formData.email, formData.password, formData.name, formData.role);
-if (formData.role === 'Participant') {
-navigate('/predict-category', { state: { email: formData.email } });
+      if (formData.role === 'Participant') {
+        navigate('/predict-category', { state: { email: formData.email } });
       } else {
         navigate('/');
       }
-        } catch (error: any) {
+    } catch (error: any) {
       setError(error.response?.data?.message || 'Registration failed');
     } finally {
       setLoading(false);
@@ -58,33 +57,34 @@ navigate('/predict-category', { state: { email: formData.email } });
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-br from-blue-50 via-white to-purple-50 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center">
-          <Link to="/" className="flex items-center justify-center mb-6 space-x-2">
-            <Calendar className="w-10 h-10 text-blue-600" />
-            <span className="text-3xl font-bold text-gray-900">Planora</span>
+          <Link to="/" className="inline-flex items-center mb-4 space-x-2">
+            <Calendar className="w-8 h-8 text-blue-600" />
+            <span className="text-2xl font-bold text-gray-900">Planora</span>
           </Link>
-          <h2 className="text-3xl font-bold text-gray-900">Create your account</h2>
-          <p className="mt-2 text-gray-600">Join thousands of event enthusiasts</p>
+          <h2 className="text-2xl font-bold text-gray-900">Create Account</h2>
+          <p className="mt-1 text-sm text-gray-600">Join our event community</p>
         </div>
 
-        {/* Registration Form */}
-        <div className="p-8 bg-white shadow-lg rounded-xl">
+        {/* Form Card */}
+        <div className="p-6 bg-white rounded-lg shadow-sm">
           {error && (
-            <div className="px-4 py-3 mb-6 text-red-700 bg-red-100 border border-red-400 rounded">
+            <div className="p-3 mb-4 text-sm text-red-600 border border-red-200 rounded-md bg-red-50">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Name Input */}
             <div>
-              <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-700">
+              <label htmlFor="name" className="block mb-1 text-sm font-medium text-gray-700">
                 Full Name
               </label>
               <div className="relative">
-                <User className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+                <User className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
                 <input
                   type="text"
                   id="name"
@@ -92,18 +92,19 @@ navigate('/predict-category', { state: { email: formData.email } });
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full py-3 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Enter your full name"
+                  className="block w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  placeholder="Your full name"
                 />
               </div>
             </div>
 
+            {/* Email Input */}
             <div>
-              <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">
-                Email Address
+              <label htmlFor="email" className="block mb-1 text-sm font-medium text-gray-700">
+                Email
               </label>
               <div className="relative">
-                <Mail className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+                <Mail className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
                 <input
                   type="email"
                   id="email"
@@ -111,37 +112,36 @@ navigate('/predict-category', { state: { email: formData.email } });
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full py-3 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Enter your email"
+                  className="block w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  placeholder="your@email.com"
                 />
               </div>
             </div>
 
+            {/* Role Selection */}
             <div>
-              <label htmlFor="role" className="block mb-2 text-sm font-medium text-gray-700">
+              <label htmlFor="role" className="block mb-1 text-sm font-medium text-gray-700">
                 Account Type
               </label>
-              <div className="relative">
-                <UserCheck className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
-                <select
-                  id="role"
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="w-full py-3 pl-10 pr-4 bg-white border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="Participant">Participant - Attend Events</option>
-                  <option value="Organizer">Organizer - Create & Manage Events</option>
-                </select>
-              </div>
+              <select
+                id="role"
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="block w-full px-3 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
+              >
+                <option value="Participant">Participant</option>
+                <option value="Organizer">Organizer</option>
+              </select>
             </div>
 
+            {/* Password Input */}
             <div>
-              <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block mb-1 text-sm font-medium text-gray-700">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+                <Lock className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
@@ -149,59 +149,55 @@ navigate('/predict-category', { state: { email: formData.email } });
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full py-3 pl-10 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Create a password"
+                  className="block w-full pl-9 pr-10 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  placeholder="Enter password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2 hover:text-gray-600"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
+            {/* Confirm Password Input */}
             <div>
-              <label htmlFor="confirmPassword" className="block mb-2 text-sm font-medium text-gray-700">
+              <label htmlFor="confirmPassword" className="block mb-1 text-sm font-medium text-gray-700">
                 Confirm Password
               </label>
               <div className="relative">
-                <Lock className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+                <Lock className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
                 <input
-                  type={showConfirmPassword ? 'text' : 'password'}
+                  type="password"
                   id="confirmPassword"
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
-                  className="w-full py-3 pl-10 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Confirm your password"
+                  className="block w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  placeholder="Confirm password"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2 hover:text-gray-600"
-                >
-                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
               </div>
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-4 py-3 font-semibold text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-blue-400"
+              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-gray-600">
+          {/* Sign In Link */}
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-600">
               Already have an account?{' '}
-              <Link to="/login" className="font-medium text-blue-600 hover:text-blue-700">
-                Sign in here
+              <Link to="/login" className="font-medium text-blue-600 transition-colors hover:text-blue-500">
+                Sign in
               </Link>
             </p>
           </div>

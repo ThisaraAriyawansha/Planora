@@ -360,9 +360,13 @@ const PredictCategory: React.FC = () => {
         )}
 
         {result && (
-        <div className="max-w-md p-4 mx-auto mt-6 text-center text-green-800 border border-green-200 shadow-sm bg-green-50 rounded-2xl animate-fade-in">
-        {result}
-        </div>
+            <div className="flex items-center max-w-xl px-6 py-4 mx-auto mt-6 space-x-3 text-green-800 bg-white border border-green-300 shadow-md rounded-xl animate-fade-in">
+            <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span className="text-sm font-medium">{result}</span>
+            </div>
+
 
         )}
 
