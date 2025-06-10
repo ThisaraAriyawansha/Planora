@@ -23,6 +23,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+
+
 // Get all events
 router.get('/', async (req, res) => {
   try {
@@ -69,8 +71,6 @@ router.get('/admin', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
-
 
 // Get event by ID
 router.get('/:id', async (req, res) => {
@@ -332,7 +332,6 @@ router.get('/organizer/:organizerId', authenticateToken, async (req, res) => {
   }
 });
 
-
 // Update event status (Admin only)
 router.put(
   '/:id/status',
@@ -363,10 +362,5 @@ router.put(
     }
   }
 );
-
-
-
-
-
 
 export default router;

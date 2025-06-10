@@ -129,5 +129,26 @@ router.put('/:id', authenticateToken, async (req, res) => {
   }
 });
 
+// Get user by ID without token authentication
+router.get('/rec/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const [users] = await db.execute(
+      'SELECT id, email, name, role, status, preference FROM users WHERE id = ?',
+      [userId]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(users[0]);
+  } catch (error) {
+    console.error('Get user error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 export default router;
