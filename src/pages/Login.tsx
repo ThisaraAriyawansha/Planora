@@ -127,7 +127,7 @@ const Login: React.FC = () => {
         <div className="p-4 rounded-lg bg-gray-50">
           <h3 className="mb-2 text-sm font-medium text-gray-700">Demo Accounts:</h3>
           <div className="space-y-1 text-xs text-gray-600">
-            <p><strong>Admin:</strong> admin@planora.com / password</p>
+            <p><strong>Admin:</strong> admin@gmail.com / password-12345678</p>
             <p><strong>Organizer:</strong> organizer@planora.com / password</p>
             <p><strong>User:</strong> user@planora.com / password</p>
           </div>
