@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Calendar, MapPin, Users, ArrowRight, Star, Clock } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 interface Event {
   id: number;
@@ -21,6 +23,10 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+  
+  useEffect(() => {
     const fetchFeaturedEvents = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/events');
@@ -38,33 +44,105 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-        <section className="min-h-[110vh] flex items-center text-white bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 relative mt-0 lg:-mt-20" style={{ backgroundImage: 'url("https://static.vecteezy.com/system/resources/previews/038/817/316/non_2x/ai-generated-minimalist-image-showcasing-the-classic-form-and-elegance-of-a-black-piano-against-a-neutral-background-free-photo.jpeg")', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed', backgroundBlendMode: 'overlay' }}>
-          <div className="absolute inset-0 z-10 bg-black opacity-30"></div>
+        <motion.section
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="min-h-[110vh] flex items-center text-white bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 relative mt-0 lg:-mt-20"
+          style={{
+            backgroundImage: 'url("https://static.vecteezy.com/system/resources/previews/038/817/316/non_2x/ai-generated-minimalist-image-showcasing-the-classic-form-and-elegance-of-a-black-piano-against-a-neutral-background-free-photo.jpeg")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed',
+            backgroundBlendMode: 'overlay'
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            transition={{ duration: 1.5 }}
+            className="absolute inset-0 z-10 bg-black"
+          ></motion.div>
           <div className="relative z-20 w-full mx-auto max-w-7xl">
             <div className="max-w-2xl px-4 py-10 text-center sm:px-6 sm:py-12 md:py-16 md:text-left lg:py-20">
-              <h1 className="mb-4 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+              <motion.h1
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                className="mb-4 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl"
+                style={{ fontFamily: 'Montserrat, sans-serif' }}
+              >
                 Planora
-              </h1>
-              <p className="mb-6 font-sans text-base text-blue-100 sm:text-lg md:text-xl">
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 30, rotateX: -10 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+                className="mb-6 font-sans text-base text-blue-100 sm:text-lg md:text-xl"
+              >
                 Find and join unforgettable events, from concerts to conferences.
-              </p>
-              <div className="flex flex-col justify-center gap-3 sm:flex-row sm:gap-4 md:justify-start">
-                <Link
-                  to="/events"
-                  className="px-4 py-2 font-sans text-sm font-medium text-gray-700 transition-all duration-300 bg-white rounded-md shadow sm:text-base hover:bg-gray-100 hover:scale-105"
+              </motion.p>
+              <motion.div
+                className="flex flex-col justify-center gap-3 sm:flex-row sm:gap-4 md:justify-start"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.2,
+                    },
+                  },
+                }}
+              >
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.7, y: 20 },
+                    visible: {
+                      opacity: 1,
+                      scale: 1,
+                      y: 0,
+                      transition: {
+                        duration: 0.5,
+                        ease: 'backOut',
+                      },
+                    },
+                  }}
                 >
-                  Explore
-                </Link>
-                <Link
-                  to="/register"
-                  className="px-4 py-2 font-sans text-sm font-medium text-white transition-all duration-300 bg-transparent border border-white rounded-md sm:text-base hover:bg-white hover:text-gray-700 "
+                  <Link
+                    to="/events"
+                    className="px-4 py-2 font-sans text-sm font-medium text-gray-700 transition-all duration-300 bg-white rounded-md shadow sm:text-base hover:bg-gray-100 hover:scale-105"
+                  >
+                    Explore
+                  </Link>
+                </motion.div>
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.7, y: 20 },
+                    visible: {
+                      opacity: 1,
+                      scale: 1,
+                      y: 0,
+                      transition: {
+                        duration: 0.5,
+                        ease: 'backOut',
+                      },
+                    },
+                  }}
                 >
-                  Join
-                </Link>
-              </div>
+                  <Link
+                    to="/register"
+                    className="px-4 py-2 font-sans text-sm font-medium text-white transition-all duration-300 bg-transparent border border-white rounded-md sm:text-base hover:bg-white hover:text-gray-700"
+                  >
+                    Join
+                  </Link>
+                </motion.div>
+              </motion.div>
             </div>
           </div>
-        </section>
+        </motion.section>
+
 
       {/* Features Section */}
       <section className="py-20 bg-white">

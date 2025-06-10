@@ -33,7 +33,11 @@ const Events: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [categories, setCategories] = useState<string[]>([]);
   const [user, setUser] = useState<User | null>(null);
-
+  
+useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   // Get user info from token
   useEffect(() => {
     const token = localStorage.getItem('token');
