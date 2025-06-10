@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Calendar, MapPin, Users, Clock, Search, Filter, Star, Heart } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, Search, Star, Heart, ChevronRight } from 'lucide-react';
 
 interface Event {
   id: number;
@@ -34,7 +34,7 @@ const Events: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [user, setUser] = useState<User | null>(null);
   
-useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   
@@ -44,11 +44,9 @@ useEffect(() => {
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        // Try to fetch full user data including preferences
         fetchUserData(payload.userId);
       } catch (error) {
         console.error('Error parsing token:', error);
-        // Fallback: try to get basic user info from token
         tryGetUserFromToken();
       }
     }
@@ -59,13 +57,12 @@ useEffect(() => {
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        // Create a basic user object from token data
         setUser({
           id: payload.userId,
-          email: '', // Not available in token
-          name: '', // Not available in token
+          email: '',
+          name: '',
           role: payload.role,
-          preference: '' // Will be empty, so no recommendations
+          preference: ''
         });
       } catch (error) {
         console.error('Error getting user from token:', error);
@@ -84,7 +81,6 @@ useEffect(() => {
       setUser(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
-      // Fallback to basic user info from token
       tryGetUserFromToken();
     }
   };
@@ -96,18 +92,16 @@ useEffect(() => {
         setEvents(response.data);
         setFilteredEvents(response.data);
         
-        // Extract unique categories
         const uniqueCategories = [...new Set(response.data.map((event: Event) => event.category).filter(Boolean))] as string[];
         setCategories(uniqueCategories);
 
-        // Set recommended events based on user preference
         if (user?.preference && user.preference.trim() !== '') {
           const recommended = response.data.filter((event: Event) => 
             event.category && event.category.toLowerCase() === user.preference.toLowerCase()
           );
-          setRecommendedEvents(recommended.slice(0, 6)); // Limit to 6 recommendations
+          setRecommendedEvents(recommended.slice(0, 6));
         } else {
-          setRecommendedEvents([]); // Clear recommendations if no preference
+          setRecommendedEvents([]);
         }
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -138,169 +132,204 @@ useEffect(() => {
     setFilteredEvents(filtered);
   }, [searchTerm, selectedCategory, events]);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
   const EventCard: React.FC<{ event: Event; isRecommended?: boolean }> = ({ event, isRecommended = false }) => (
-    <div
-      className={`overflow-hidden transition-all duration-300 bg-white shadow-md rounded-xl hover:shadow-xl group relative ${
-        isRecommended ? 'ring-2 ring-yellow-400' : ''
-      }`}
-    >
-      {isRecommended && (
-        <div className="absolute z-10 top-4 right-4">
-          <div className="flex items-center px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-full">
-            <Star className="w-3 h-3 mr-1 fill-current" />
-            Recommended
-          </div>
-        </div>
-      )}
-      <div className="relative h-48 bg-gradient-to-r from-blue-500 to-purple-600">
-        {event.main_image ? (
-          <img
-            src={`http://localhost:5000${event.main_image}`}
-            alt={event.title}
-            className="object-cover w-full h-full"
-          />
-        ) : (
-          <div className="flex items-center justify-center w-full h-full">
-            <Calendar className="w-16 h-16 text-white opacity-50" />
+    <Link to={`/events/${event.id}`}>
+      <article className={`group cursor-pointer bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 ${isRecommended ? 'relative' : ''}`}>
+        {isRecommended && (
+          <div className="absolute z-10 -top-3 -right-3">
+            <div className="flex items-center gap-1 px-3 py-1 text-xs font-semibold border rounded-full shadow-sm bg-amber-100 text-amber-800 border-amber-300">
+              <Star className="w-3 h-3 fill-amber-500" />
+              Recommended
+            </div>
           </div>
         )}
-        <div className="absolute inset-0 transition-opacity bg-black bg-opacity-20 group-hover:bg-opacity-30"></div>
-        {event.category && (
+        
+        {/* Image */}
+        <div className="relative mb-4 aspect-[4/3] overflow-hidden rounded-t-2xl bg-gray-100">
+          {event.main_image ? (
+            <img
+              src={`http://localhost:5000${event.main_image}`}
+              alt={event.title}
+              className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-gray-100 to-gray-200">
+              <Calendar className="w-16 h-16 text-gray-400" />
+            </div>
+          )}
+          <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/30 to-transparent group-hover:opacity-100" />
+          
+          {/* Capacity Badge */}
           <div className="absolute top-4 left-4">
-            <span className="px-3 py-1 text-sm font-medium text-gray-800 rounded-full bg-white/90">
-              {event.category}
+            <span className="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-900 rounded-full shadow-sm bg-white/95">
+              <Users className="w-4 h-4 mr-1" />
+              {event.capacity} spots
             </span>
           </div>
-        )}
-      </div>
-      <div className="p-6">
-        <div className="flex items-center mb-2 text-sm text-gray-500">
-          <Clock className="w-4 h-4 mr-1" />
-          <span>{new Date(event.date).toLocaleDateString()}</span>
-          <span className="mx-2">•</span>
-          <span>{event.time}</span>
         </div>
-        <h3 className="mb-2 text-xl font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
-          {event.title}
-        </h3>
-        <div className="flex items-center mb-2 text-gray-600">
-          <MapPin className="w-4 h-4 mr-1" />
-          <span className="text-sm">{event.location}</span>
-        </div>
-        <p className="mb-4 text-sm text-gray-600 line-clamp-2">
-          {event.description}
-        </p>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center text-sm text-gray-500">
-            <Users className="w-4 h-4 mr-1" />
-            <span>Capacity: {event.capacity}</span>
+
+        {/* Content */}
+        <div className="px-5 pb-5 space-y-3">
+          {/* Meta Info */}
+          <div className="flex items-center gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-1">
+              <Calendar className="w-4 h-4" />
+              <span>{formatDate(event.date)}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              <span>{event.time}</span>
+            </div>
           </div>
-          <Link
-            to={`/events/${event.id}`}
-            className="px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
-          >
-            View Details
-          </Link>
-        </div>
-        {event.organizer_name && (
-          <div className="pt-3 mt-3 border-t border-gray-100">
-            <p className="text-xs text-gray-500">
-              Organized by <span className="font-medium">{event.organizer_name}</span>
-            </p>
+
+          {/* Title */}
+          <h3 className="text-xl font-semibold text-gray-900 transition-colors group-hover:text-indigo-600">
+            {event.title}
+          </h3>
+
+          {/* Location */}
+          <div className="flex items-center gap-1 text-gray-600">
+            <MapPin className="w-4 h-4" />
+            <span className="text-sm">{event.location}</span>
           </div>
-        )}
-      </div>
-    </div>
+
+          {/* Description */}
+          <p className="text-sm leading-relaxed text-gray-600 line-clamp-2">
+            {event.description}
+          </p>
+
+          {/* Category & Organizer */}
+          <div className="flex items-center justify-between pt-2">
+            <div className="space-y-1">
+              {event.category && (
+                <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-indigo-700 rounded-full bg-indigo-50">
+                  {event.category}
+                </span>
+              )}
+              {event.organizer_name && (
+                <p className="text-xs text-gray-500">
+                  Organized by {event.organizer_name}
+                </p>
+              )}
+            </div>
+            <ChevronRight className="w-5 h-5 text-indigo-500 transition-transform group-hover:translate-x-2" />
+          </div>
+        </div>
+      </article>
+    </Link>
   );
 
   return (
-    <div className="min-h-screen py-8">
-      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold text-gray-900">Discover Events</h1>
-          <p className="max-w-2xl mx-auto text-xl text-gray-600">
-            Find and join amazing events happening in your area
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="max-w-5xl px-6 py-12 mx-auto">
+        <div className="text-center">
+          <h1 className="text-4xl font-light tracking-normal text-gray-900">
+            Upcoming Events
+          </h1>
+          <p className="max-w-2xl mx-auto mt-4 text-base leading-relaxed text-gray-600">
+            Discover exceptional experiences designed for growth, learning, and connection.
           </p>
         </div>
+      </header>
 
+      <div className="px-6 mx-auto max-w-7xl lg:px-8">
         {/* Recommended Events Section */}
         {user && user.preference && user.preference.trim() !== '' && recommendedEvents.length > 0 && (
-          <div className="mb-12">
-            <div className="flex items-center mb-6">
-              <Heart className="w-6 h-6 mr-2 text-red-500" />
-              <h2 className="text-2xl font-bold text-gray-900">
+          <div className="mb-20">
+            <div className="flex items-center gap-3 mb-8">
+              <Heart className="w-5 h-5 text-rose-500" />
+              <h2 className="text-2xl font-light text-gray-900">
                 Recommended for You
               </h2>
-              <span className="px-3 py-1 ml-2 text-sm font-medium text-blue-800 bg-blue-100 rounded-full">
-                Based on your preference: {user.preference}
+              <span className="px-3 py-1 text-sm font-medium text-gray-600 bg-gray-100 rounded-full">
+                {user.preference}
               </span>
             </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-8 mb-16 sm:grid-cols-2 lg:grid-cols-3">
               {recommendedEvents.map((event) => (
                 <EventCard key={`rec-${event.id}`} event={event} isRecommended={true} />
               ))}
             </div>
-            <div className="mt-8 border-b border-gray-200"></div>
+            <div className="border-b border-gray-200"></div>
           </div>
         )}
 
         {/* Search and Filter */}
-        <div className="flex flex-col gap-4 mb-8 md:flex-row">
-          <div className="relative flex-1">
-            <Search className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+        <div className="flex flex-col gap-6 mb-16 sm:flex-row sm:items-center sm:justify-between">
+          {/* Search */}
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute w-4 h-4 text-gray-400 -translate-y-1/2 left-4 top-1/2" />
             <input
               type="text"
               placeholder="Search events..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full py-3 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full py-3 pl-12 pr-4 text-gray-900 border-0 rounded-full ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
             />
           </div>
-          <div className="relative">
-            <Filter className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="pl-10 pr-8 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white min-w-[200px]"
-            >
-              <option value="">All Categories</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
 
-        {/* All Events Header */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">All Events</h2>
+          {/* Categories */}
+          <div className="flex gap-2 overflow-x-auto">
+            <button
+              onClick={() => setSelectedCategory('')}
+              className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                selectedCategory === ''
+                  ? 'bg-gray-900 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              All
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                  selectedCategory === category
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Events Grid */}
-        {loading ? (
-          <div className="flex justify-center py-12">
-            <div className="w-12 h-12 border-b-2 border-blue-600 rounded-full animate-spin"></div>
-          </div>
-        ) : filteredEvents.length > 0 ? (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {filteredEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
-          </div>
-        ) : (
-          <div className="py-12 text-center">
-            <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-            <h3 className="mb-2 text-xl font-semibold text-gray-900">No Events Found</h3>
-            <p className="text-gray-600">
-              {searchTerm || selectedCategory
-                ? 'Try adjusting your search criteria'
-                : 'No events are currently available'}
-            </p>
-          </div>
-        )}
+        <div className="pb-24">
+          {loading ? (
+            <div className="flex justify-center py-16">
+              <div className="w-8 h-8 border-2 border-gray-300 rounded-full border-t-gray-900 animate-spin"></div>
+            </div>
+          ) : filteredEvents.length > 0 ? (
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredEvents.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          ) : (
+            <div className="py-16 text-center">
+              <Calendar className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+              <h3 className="mb-2 text-lg font-medium text-gray-900">No events found</h3>
+              <p className="text-gray-600">
+                {searchTerm || selectedCategory
+                  ? 'Try adjusting your search criteria'
+                  : 'No events are currently available'}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
