@@ -43,7 +43,7 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <motion.section
+          <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -82,7 +82,7 @@ const Home: React.FC = () => {
               Find and join unforgettable events, from concerts to conferences.
             </motion.p>
             <motion.div
-              className="flex flex-col justify-center gap-3 sm:flex-row sm:gap-4 md:justify-start"
+              className="flex flex-col justify-center gap-5 sm:flex-row sm:gap-4 md:justify-start"
               initial="hidden"
               animate="visible"
               variants={{
@@ -269,28 +269,28 @@ const Home: React.FC = () => {
 
       {/* CTA Section */}
             <section 
-      className="relative py-20 text-white bg-gradient-to-r from-blue-600 to-purple-700"
-      style={{
-        backgroundImage: "url('https://wallpapercat.com/w/full/d/7/2/1161021-3840x2160-desktop-4k-concert-background-photo.jpg')",
-        backgroundAttachment: 'fixed',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="relative max-w-4xl px-4 mx-auto text-center sm:px-6 lg:px-8">
-        <h2 className="mb-4 text-4xl font-bold">Ready to Get Started?</h2>
-        <p className="mb-8 text-xl text-blue-100">
-          Join our community today and start discovering amazing events in your area.
-        </p>
-        <Link
-          to="/register"
-          className="inline-block px-6 py-4 text-sm font-semibold text-white transition-all duration-300 bg-transparent border border-white rounded-lg shadow-lg hover:bg-white hover:text-gray-500 hover:scale-105"
-        >
-          Create Your Account
-        </Link>
-      </div>
-    </section>
+            className="relative py-20 text-white bg-gradient-to-r from-blue-600 to-purple-700"
+            style={{
+              backgroundImage: "url('https://wallpapercat.com/w/full/d/7/2/1161021-3840x2160-desktop-4k-concert-background-photo.jpg')",
+              backgroundAttachment: 'fixed',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            <div className="absolute inset-0 bg-black opacity-50"></div>
+            <div className="relative max-w-4xl px-4 mx-auto text-center sm:px-6 lg:px-8">
+              <h2 className="mb-4 text-4xl font-bold">Ready to Get Started?</h2>
+              <p className="mb-8 text-xl text-blue-100">
+                Join our community today and start discovering amazing events in your area.
+              </p>
+              <Link
+                to="/register"
+                className="inline-block px-6 py-4 text-sm font-semibold text-white transition-all duration-300 bg-transparent border border-white rounded-lg shadow-lg hover:bg-white hover:text-gray-500 hover:scale-105"
+              >
+                Create Your Account
+              </Link>
+            </div>
+          </section>
 
       {/* Testimonials Section */}
       <section className="py-20 bg-white">
