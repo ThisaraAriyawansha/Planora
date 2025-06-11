@@ -11,7 +11,7 @@ interface Event {
   location: string;
   description: string;
   capacity: number;
-  main_image: string;
+  main_image: string | null | File;
   category: string;
   status: string;
   images?: string[];
@@ -255,6 +255,17 @@ const OrganizerDashboard: React.FC = () => {
       setEditEvent({
         ...editEvent,
         images: editEvent.images?.filter((img) => img !== imageUrl),
+      });
+    }
+  };
+
+  // Handle main image change for edit event
+  const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (editEvent) {
+      setEditEvent({
+        ...editEvent,
+        main_image: file,
       });
     }
   };
@@ -642,15 +653,27 @@ const OrganizerDashboard: React.FC = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => setEditEvent({ ...editEvent, main_image: e.target.files?.[0] ? `/uploads/${e.target.files[0].name}` : editEvent.main_image })}
+                      onChange={handleMainImageChange}
                       className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent md:px-4 md:py-3"
                     />
                     {editEvent.main_image && (
                       <div className="flex items-center mt-2">
-                        <img src={editEvent.main_image} alt="Main" className="object-cover w-16 h-16 rounded sm:w-20 sm:h-20" />
+                        {typeof editEvent.main_image === 'object' && editEvent.main_image !== null && 'name' in editEvent.main_image ? (
+                          <img
+                            src={URL.createObjectURL(editEvent.main_image as File)}
+                            alt="Main"
+                            className="object-cover w-16 h-16 rounded sm:w-20 sm:h-20"
+                          />
+                        ) : (
+                          <img
+                            src={editEvent.main_image as string}
+                            alt="Main"
+                            className="object-cover w-16 h-16 rounded sm:w-20 sm:h-20"
+                          />
+                        )}
                         <button
                           type="button"
-                          onClick={() => setEditEvent({ ...editEvent, main_image: '' })}
+                          onClick={() => setEditEvent({ ...editEvent, main_image: null })}
                           className="p-2 ml-2 text-red-600 hover:text-red-800"
                         >
                           <Trash2 className="w-4 h-4" />

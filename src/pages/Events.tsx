@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Calendar, MapPin, Users, Clock, Search, Star, Heart, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface Event {
   id: number;
@@ -228,19 +229,55 @@ const Events: React.FC = () => {
     </Link>
   );
 
+
+    // Animation variants for header
+  const headerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: 'easeOut',
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut' }
+    }
+  };
+
+  
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="max-w-5xl px-6 py-12 mx-auto">
+      <motion.header
+        className="max-w-4xl px-4 py-8 mx-auto md:max-w-5xl sm:px-6 lg:px-8 sm:pt-12 sm:pb-16"
+        initial="hidden"
+        animate="visible"
+        variants={headerVariants}
+      >
         <div className="text-center">
-          <h1 className="text-4xl font-light tracking-normal text-gray-900">
+          <motion.h1
+            className="text-3xl tracking-tight text-gray-900 sm:text-4xl"
+            variants={childVariants}
+          >
             Upcoming Events
-          </h1>
-          <p className="max-w-2xl mx-auto mt-4 text-base leading-relaxed text-gray-600">
+          </motion.h1>
+          <motion.p
+            className="max-w-xl mx-auto mt-3 text-base leading-relaxed text-gray-600 sm:mt-4 sm:max-w-2xl"
+            variants={childVariants}
+          >
             Discover exceptional experiences designed for growth, learning, and connection.
-          </p>
+          </motion.p>
         </div>
-      </header>
+      </motion.header>
 
       <div className="px-6 mx-auto max-w-7xl lg:px-8">
         {/* Recommended Events Section */}
