@@ -60,14 +60,28 @@ const Contact: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-20 text-white bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800">
-        <div className="max-w-4xl px-4 mx-auto text-center sm:px-6 lg:px-8">
-          <h1 className="mb-6 text-5xl font-bold">Get in Touch</h1>
-          <p className="text-xl text-blue-100">
-            Have questions or need help? We're here to assist you every step of the way.
-          </p>
-        </div>
-      </section>
+    <section
+      className="relative min-h-[60vh] text-white bg-fixed bg-center bg-cover flex items-center justify-center"
+      style={{
+        backgroundImage:
+          "url('https://wallpapers.com/images/featured/concert-background-dd0syeox7rmi78l0.jpg')",
+      }}
+    >
+      {/* Overlay for better readability */}
+      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+
+      {/* Content */}
+      <div className="relative max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+        <h1 className="mb-6 font-serif text-3xl font-extrabold sm:text-4xl md:text-5xl">
+          Get in Touch
+        </h1>
+        <p className="font-sans text-base font-light text-blue-100 sm:text-lg md:text-xl">
+          Have questions or need help? We're here to assist you every step of the way.
+        </p>
+      </div>
+    </section>
+
+
 
       <div className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-2">
