@@ -35,38 +35,69 @@ const About: React.FC = () => {
     useEffect(() => {
       window.scrollTo(0, 0);
     }, []);
+// Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        when: "beforeChildren"
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
 
     
   return (
     <div className="min-h-screen font-sans antialiased bg-gray-50">
       {/* Hero Section */}
-      <section
-        ref={heroRef}
-        className="relative bg-cover bg-center bg-fixed bg-[url('https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] py-24"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/70 to-gray-800/50 backdrop-blur-sm"></div>
-        <div className="relative max-w-5xl px-6 mx-auto text-center">
-          <motion.h1
-            className="mb-6 text-4xl font-semibold tracking-tight text-white sm:text-4xl md:text-5xl"
-            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}
-            variants={fadeInUp}
-            initial="hidden"
-            animate={heroInView ? 'visible' : 'hidden'}
-          >
-            ABOUT PLANORA
-          </motion.h1>
-          <motion.p
-            className="max-w-3xl mx-auto text-base leading-relaxed sm:text-lg text-gray-200/90"
-            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}
-            variants={fadeInUp}
-            initial="hidden"
-            animate={heroInView ? 'visible' : 'hidden'}
-            transition={{ delay: 0.2 }}
-          >
+
+            <motion.section
+              className="relative min-h-[60vh] text-white bg-fixed bg-center bg-cover flex items-center justify-center"
+              style={{
+                backgroundImage: "url('https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')",
+                backgroundAttachment: 'fixed'
+              }}
+            >
+              {/* Overlay for better readability */}
+              <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+      
+              {/* Content */}
+              <motion.div 
+                className="relative max-w-4xl px-4 text-center sm:px-6 lg:px-8"
+                initial="hidden"
+                animate="visible"
+                variants={containerVariants}
+              >
+                <motion.h1 
+                  className="mb-6 font-serif text-3xl font-extrabold sm:text-4xl md:text-5xl"
+                  variants={itemVariants}
+                >
+                   About Planora
+                </motion.h1>
+                <motion.p 
+                  className="font-sans text-base font-light text-blue-100 sm:text-lg md:text-xl"
+                  variants={itemVariants}
+                >
             We're passionate about connecting people through meaningful events. Our platform makes discovering, organizing, and attending events seamless, secure, and delightful.
-          </motion.p>
-        </div>
-      </section>
+                </motion.p>
+              </motion.div>
+            </motion.section>
+
+            
+      
 
       {/* Mission Section */}
       <section ref={missionRef} className="py-24 bg-white">
