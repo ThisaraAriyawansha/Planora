@@ -1,194 +1,306 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Calendar, Users, Award, Globe, Heart, Shield } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
+
+
 
 const About: React.FC = () => {
+  // Variants for fade-in and slide-up animations
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  };
+
+  const scaleIn = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } },
+  };
+
+  // Refs and useInView for scroll-based triggering
+  const heroRef = useRef(null);
+  const missionRef = useRef(null);
+  const valuesRef = useRef(null);
+  const statsRef = useRef(null);
+  const teamRef = useRef(null);
+  const ctaRef = useRef(null);
+
+  const heroInView = useInView(heroRef, { once: true, margin: '-100px' });
+  const missionInView = useInView(missionRef, { once: true, margin: '-100px' });
+  const valuesInView = useInView(valuesRef, { once: true, margin: '-100px' });
+  const statsInView = useInView(statsRef, { once: true, margin: '-100px' });
+  const teamInView = useInView(teamRef, { once: true, margin: '-100px' });
+  const ctaInView = useInView(ctaRef, { once: true, margin: '-100px' });
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+
+    
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen font-sans antialiased bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-6">About Planora</h1>
-          <p className="text-xl text-blue-100 leading-relaxed">
-            We're passionate about connecting people through meaningful events. Our platform makes discovering, 
-            organizing, and attending events simple, secure, and enjoyable for everyone.
-          </p>
+      <section
+        ref={heroRef}
+        className="relative bg-cover bg-center bg-fixed bg-[url('https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] py-24"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/70 to-gray-800/50 backdrop-blur-sm"></div>
+        <div className="relative max-w-5xl px-6 mx-auto text-center">
+          <motion.h1
+            className="mb-6 text-4xl font-semibold tracking-tight text-white sm:text-4xl md:text-5xl"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}
+            variants={fadeInUp}
+            initial="hidden"
+            animate={heroInView ? 'visible' : 'hidden'}
+          >
+            ABOUT PLANORA
+          </motion.h1>
+          <motion.p
+            className="max-w-3xl mx-auto text-base leading-relaxed sm:text-lg text-gray-200/90"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}
+            variants={fadeInUp}
+            initial="hidden"
+            animate={heroInView ? 'visible' : 'hidden'}
+            transition={{ delay: 0.2 }}
+          >
+            We're passionate about connecting people through meaningful events. Our platform makes discovering, organizing, and attending events seamless, secure, and delightful.
+          </motion.p>
         </div>
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Mission</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+      <section ref={missionRef} className="py-24 bg-white">
+        <div className="max-w-6xl px-6 mx-auto">
+          <motion.div
+            className="mb-16 text-center"
+            variants={fadeInUp}
+            initial="hidden"
+            animate={missionInView ? 'visible' : 'hidden'}
+          >
+            <h2 className="mb-4 text-4xl font-semibold tracking-tight text-gray-900">Our Mission</h2>
+            <p className="max-w-3xl mx-auto text-lg text-gray-600">
               To create a world where amazing events are accessible to everyone, and organizing them is effortless.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Calendar className="h-8 w-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Easy Event Discovery</h3>
-              <p className="text-gray-600">
-                Find events that match your interests with our intelligent search and recommendation system.
-              </p>
-            </div>
-
-            <div className="text-center p-6">
-              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Community Building</h3>
-              <p className="text-gray-600">
-                Connect with like-minded people and build lasting relationships through shared experiences.
-              </p>
-            </div>
-
-            <div className="text-center p-6">
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Award className="h-8 w-8 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Quality Assurance</h3>
-              <p className="text-gray-600">
-                All events are verified and curated to ensure high-quality experiences for all participants.
-              </p>
-            </div>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                icon: <Calendar className="text-blue-500 w-7 h-7" />,
+                title: 'Easy Event Discovery',
+                description: 'Find events that match your interests with our intelligent search and recommendation system.',
+              },
+              {
+                icon: <Users className="text-green-500 w-7 h-7" />,
+                title: 'Community Building',
+                description: 'Connect with like-minded people and build lasting relationships through shared experiences.',
+              },
+              {
+                icon: <Award className="text-purple-500 w-7 h-7" />,
+                title: 'Quality Assurance',
+                description: 'All events are verified and curated to ensure high-quality experiences for all participants.',
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                className="p-6 text-center transition-shadow shadow-sm bg-gray-50 rounded-2xl hover:shadow-md"
+                variants={fadeInUp}
+                initial="hidden"
+                animate={missionInView ? 'visible' : 'hidden'}
+                transition={{ delay: index * 0.2 }}
+              >
+                <div className="flex items-center justify-center mx-auto mb-4 bg-white rounded-full shadow-sm w-14 h-14">
+                  {item.icon}
+                </div>
+                <h3 className="mb-2 text-lg font-semibold text-gray-900">{item.title}</h3>
+                <p className="text-sm text-gray-500">{item.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Values Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Values</h2>
-            <p className="text-xl text-gray-600">The principles that guide everything we do</p>
-          </div>
+      <section ref={valuesRef} className="py-24 bg-gray-100">
+        <div className="max-w-6xl px-6 mx-auto">
+          <motion.div
+            className="mb-16 text-center"
+            variants={fadeInUp}
+            initial="hidden"
+            animate={valuesInView ? 'visible' : 'hidden'}
+          >
+            <h2 className="mb-4 text-4xl font-semibold tracking-tight text-gray-900">Our Values</h2>
+            <p className="text-lg text-gray-600">The principles that guide everything we do</p>
+          </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-              <Globe className="h-12 w-12 text-blue-600 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Inclusivity</h3>
-              <p className="text-gray-600">
-                We believe events should be accessible to everyone, regardless of background, location, or circumstances.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-              <Heart className="h-12 w-12 text-red-600 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Community First</h3>
-              <p className="text-gray-600">
-                Our platform is built to foster genuine connections and strengthen communities through shared experiences.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-              <Shield className="h-12 w-12 text-green-600 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Trust & Safety</h3>
-              <p className="text-gray-600">
-                We prioritize the security and privacy of our users, ensuring a safe environment for all interactions.
-              </p>
-            </div>
+          <div className="grid gap-8 md:grid-cols-3">
+            {[
+              {
+                icon: <Globe className="w-10 h-10 mb-4 text-blue-500" />,
+                title: 'Inclusivity',
+                description: 'We believe events should be accessible to everyone, regardless of background, location, or circumstances.',
+              },
+              {
+                icon: <Heart className="w-10 h-10 mb-4 text-red-500" />,
+                title: 'Community First',
+                description: 'Our platform is built to foster genuine connections and strengthen communities through shared experiences.',
+              },
+              {
+                icon: <Shield className="w-10 h-10 mb-4 text-green-500" />,
+                title: 'Trust & Safety',
+                description: 'We prioritize the security and privacy of our users, ensuring a safe environment for all interactions.',
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                className="p-8 transition-shadow shadow-sm bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-md"
+                variants={fadeInUp}
+                initial="hidden"
+                animate={valuesInView ? 'visible' : 'hidden'}
+                transition={{ delay: index * 0.2 }}
+              >
+                {item.icon}
+                <h3 className="mb-3 text-lg font-semibold text-gray-900">{item.title}</h3>
+                <p className="text-sm text-gray-500">{item.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Planora by the Numbers</h2>
-            <p className="text-xl text-gray-600">Our growing community speaks volumes</p>
-          </div>
+      <section ref={statsRef} className="py-24 bg-white">
+        <div className="max-w-6xl px-6 mx-auto">
+          <motion.div
+            className="mb-16 text-center"
+            variants={fadeInUp}
+            initial="hidden"
+            animate={statsInView ? 'visible' : 'hidden'}
+          >
+            <h2 className="mb-4 text-4xl font-semibold tracking-tight text-gray-900">Planora by the Numbers</h2>
+            <p className="text-lg text-gray-600">Our growing community speaks volumes</p>
+          </motion.div>
 
-          <div className="grid md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold text-blue-600 mb-2">10,000+</div>
-              <div className="text-gray-600">Events Hosted</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-green-600 mb-2">50,000+</div>
-              <div className="text-gray-600">Happy Users</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-purple-600 mb-2">500+</div>
-              <div className="text-gray-600">Event Organizers</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-orange-600 mb-2">25</div>
-              <div className="text-gray-600">Cities Covered</div>
-            </div>
+          <div className="grid gap-8 text-center md:grid-cols-4">
+            {[
+              { value: '10,000+', label: 'Events Hosted', color: 'text-blue-500' },
+              { value: '50,000+', label: 'Happy Users', color: 'text-green-500' },
+              { value: '500+', label: 'Event Organizers', color: 'text-purple-500' },
+              { value: '25', label: 'Cities Covered', color: 'text-orange-500' },
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                variants={scaleIn}
+                initial="hidden"
+                animate={statsInView ? 'visible' : 'hidden'}
+                transition={{ delay: index * 0.2 }}
+              >
+                <div className={`mb-2 text-3xl font-semibold ${stat.color}`}>{stat.value}</div>
+                <div className="text-sm text-gray-500">{stat.label}</div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Team Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
-            <p className="text-xl text-gray-600">The passionate people behind Planora</p>
-          </div>
+      <section ref={teamRef} className="py-24 bg-gray-100">
+        <div className="max-w-6xl px-6 mx-auto">
+          <motion.div
+            className="mb-16 text-center"
+            variants={fadeInUp}
+            initial="hidden"
+            animate={teamInView ? 'visible' : 'hidden'}
+          >
+            <h2 className="mb-4 text-4xl font-semibold tracking-tight text-gray-900">Meet Our Team</h2>
+            <p className="text-lg text-gray-600">The passionate people behind Planora</p>
+          </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <Users className="h-16 w-16 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Sarah Johnson</h3>
-              <p className="text-blue-600 font-medium mb-2">CEO & Founder</p>
-              <p className="text-gray-600 text-sm">
-                Passionate about connecting communities through meaningful events and experiences.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-32 h-32 bg-gradient-to-r from-green-500 to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <Users className="h-16 w-16 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Michael Chen</h3>
-              <p className="text-green-600 font-medium mb-2">CTO</p>
-              <p className="text-gray-600 text-sm">
-                Technology enthusiast focused on building scalable, user-friendly platforms.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-32 h-32 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <Users className="h-16 w-16 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Emily Rodriguez</h3>
-              <p className="text-purple-600 font-medium mb-2">Head of Community</p>
-              <p className="text-gray-600 text-sm">
-                Dedicated to ensuring every user has an exceptional experience on our platform.
-              </p>
-            </div>
+          <div className="grid gap-8 md:grid-cols-3">
+            {[
+              {
+                icon: <Users className="w-12 h-12 text-blue-500" />,
+                name: 'Sarah Johnson',
+                role: 'CEO & Founder',
+                description: 'Passionate about connecting communities through meaningful events and experiences.',
+                roleColor: 'text-blue-500',
+              },
+              {
+                icon: <Users className="w-12 h-12 text-green-500" />,
+                name: 'Michael Chen',
+                role: 'CTO',
+                description: 'Technology enthusiast focused on building scalable, user-friendly platforms.',
+                roleColor: 'text-green-500',
+              },
+              {
+                icon: <Users className="w-12 h-12 text-purple-500" />,
+                name: 'Emily Rodriguez',
+                role: 'Head of Community',
+                description: 'Dedicated to ensuring every user has an exceptional experience on our platform.',
+                roleColor: 'text-purple-500',
+              },
+            ].map((member, index) => (
+              <motion.div
+                key={index}
+                className="text-center"
+                variants={fadeInUp}
+                initial="hidden"
+                animate={teamInView ? 'visible' : 'hidden'}
+                transition={{ delay: index * 0.2 }}
+              >
+                <div className="flex items-center justify-center w-24 h-24 mx-auto mb-4 bg-white rounded-full shadow-sm">
+                  {member.icon}
+                </div>
+                <h3 className="mb-2 text-lg font-semibold text-gray-900">{member.name}</h3>
+                <p className={`mb-2 font-medium ${member.roleColor}`}>{member.role}</p>
+                <p className="text-sm text-gray-500">{member.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-700 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-4">Join Our Mission</h2>
-          <p className="text-xl mb-8 text-blue-100">
+      <section ref={ctaRef} className="py-24 bg-gradient-to-br from-gray-800 to-gray-900">
+        <div className="max-w-4xl px-6 mx-auto text-center">
+          <motion.h2
+            className="mb-4 text-4xl font-semibold tracking-tight text-white"
+            variants={fadeInUp}
+            initial="hidden"
+            animate={ctaInView ? 'visible' : 'hidden'}
+          >
+            Join Our Mission
+          </motion.h2>
+          <motion.p
+            className="mb-8 text-lg text-gray-200"
+            variants={fadeInUp}
+            initial="hidden"
+            animate={ctaInView ? 'visible' : 'hidden'}
+            transition={{ delay: 0.2 }}
+          >
             Be part of a community that's revolutionizing how people discover and attend events.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+          </motion.p>
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
+            <motion.a
               href="/register"
-              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition-colors"
+              className="px-8 py-3 font-medium text-gray-900 transition-colors bg-white rounded-full hover:bg-gray-200"
+              variants={scaleIn}
+              initial="hidden"
+              animate={ctaInView ? 'visible' : 'hidden'}
+              transition={{ delay: 0.4 }}
             >
               Get Started Today
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href="/contact"
-              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-3 rounded-lg font-semibold transition-colors"
+              className="px-8 py-3 font-medium text-white transition-colors border-2 border-white rounded-full hover:bg-white hover:text-gray-900"
+              variants={scaleIn}
+              initial="hidden"
+              animate={ctaInView ? 'visible' : 'hidden'}
+              transition={{ delay: 0.6 }}
             >
               Contact Us
-            </a>
+            </motion.a>
           </div>
         </div>
       </section>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Send, MessageCircle, HelpCircle, Users } from 'lucide-react';
 
 const Contact: React.FC = () => {
@@ -8,16 +8,42 @@ const Contact: React.FC = () => {
     subject: '',
     message: ''
   });
+  const [isSending, setIsSending] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [error, setError] = useState('');
 
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setIsSending(true);
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/registrations/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          to: 'thisara.a2001@gmail.com', // Admin email
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Form submitted:', formData);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setShowSuccessPopup(true);
+        setTimeout(() => setShowSuccessPopup(false), 3000); // Auto-close popup after 3 seconds
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || 'Failed to send message. Please try again.');
+      }
+    } catch (err) {
+      console.error('Error sending email:', err);
+      setError('An error occurred. Please try again later.');
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -27,32 +53,36 @@ const Contact: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800 text-white py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold mb-6">Get in Touch</h1>
+      <section className="py-20 text-white bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800">
+        <div className="max-w-4xl px-4 mx-auto text-center sm:px-6 lg:px-8">
+          <h1 className="mb-6 text-5xl font-bold">Get in Touch</h1>
           <p className="text-xl text-blue-100">
             Have questions or need help? We're here to assist you every step of the way.
           </p>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-12">
+      <div className="px-4 py-20 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-2">
           {/* Contact Information */}
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">Let's Start a Conversation</h2>
-            <p className="text-lg text-gray-600 mb-8">
+            <h2 className="mb-8 text-3xl font-bold text-gray-900">Let's Start a Conversation</h2>
+            <p className="mb-8 text-lg text-gray-600">
               Whether you're looking to organize an event, need help with registration, or have feedback about our platform, 
               we'd love to hear from you.
             </p>
 
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-3 rounded-lg">
-                  <Mail className="h-6 w-6 text-blue-600" />
+                <div className="p-3 bg-blue-100 rounded-lg">
+                  <Mail className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">Email Us</h3>
@@ -62,23 +92,23 @@ const Contact: React.FC = () => {
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="bg-green-100 p-3 rounded-lg">
-                  <Phone className="h-6 w-6 text-green-600" />
+                <div className="p-3 bg-green-100 rounded-lg">
+                  <Phone className="w-6 h-6 text-green-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">Call Us</h3>
-                  <p className="text-gray-600">+1 (555) 123-4567</p>
-                  <p className="text-sm text-gray-500">Mon-Fri, 9AM-6PM EST</p>
+                  <p className="text-gray-600">+94 11 234 5678</p>
+                  <p className="text-sm text-gray-500">Mon-Fri, 9AM-6PM </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="bg-purple-100 p-3 rounded-lg">
-                  <MapPin className="h-6 w-6 text-purple-600" />
+                <div className="p-3 bg-purple-100 rounded-lg">
+                  <MapPin className="w-6 h-6 text-purple-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">Visit Us</h3>
-                  <p className="text-gray-600">123 Event Street<br />San Francisco, CA 94105</p>
+                  <p className="text-gray-600">123 Event Street<br />Colombo, Sri Lanka</p>
                   <p className="text-sm text-gray-500">Open for scheduled meetings</p>
                 </div>
               </div>
@@ -86,34 +116,34 @@ const Contact: React.FC = () => {
 
             {/* FAQ Quick Links */}
             <div className="mt-12">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Quick Help</h3>
+              <h3 className="mb-4 text-xl font-semibold text-gray-900">Quick Help</h3>
               <div className="grid grid-cols-1 gap-4">
-                <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                <div className="p-4 transition-colors border border-gray-200 rounded-lg hover:bg-gray-50">
                   <div className="flex items-center space-x-3">
-                    <HelpCircle className="h-5 w-5 text-blue-600" />
+                    <HelpCircle className="w-5 h-5 text-blue-600" />
                     <span className="font-medium text-gray-900">How do I create an event?</span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">
+                  <p className="mt-2 text-sm text-gray-600">
                     Register as an organizer and use our intuitive event creation tools.
                   </p>
                 </div>
                 
-                <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                <div className="p-4 transition-colors border border-gray-200 rounded-lg hover:bg-gray-50">
                   <div className="flex items-center space-x-3">
-                    <Users className="h-5 w-5 text-green-600" />
+                    <Users className="w-5 h-5 text-green-600" />
                     <span className="font-medium text-gray-900">How do I register for events?</span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">
+                  <p className="mt-2 text-sm text-gray-600">
                     Simply browse events and click "Register Now" on any event page.
                   </p>
                 </div>
 
-                <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                <div className="p-4 transition-colors border border-gray-200 rounded-lg hover:bg-gray-50">
                   <div className="flex items-center space-x-3">
-                    <MessageCircle className="h-5 w-5 text-purple-600" />
+                    <MessageCircle className="w-5 h-5 text-purple-600" />
                     <span className="font-medium text-gray-900">Need help with your account?</span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-2">
+                  <p className="mt-2 text-sm text-gray-600">
                     Visit your dashboard or contact our support team for assistance.
                   </p>
                 </div>
@@ -122,18 +152,18 @@ const Contact: React.FC = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h3>
+          <div className="p-8 bg-white shadow-lg rounded-xl">
+            <h3 className="mb-6 text-2xl font-bold text-gray-900">Send us a Message</h3>
             
-            {submitted && (
-              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                Thank you for your message! We'll get back to you soon.
+            {error && (
+              <div className="px-4 py-3 mb-6 text-red-700 bg-red-100 border border-red-400 rounded">
+                {error}
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-700">
                   Full Name
                 </label>
                 <input
@@ -149,7 +179,7 @@ const Contact: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">
                   Email Address
                 </label>
                 <input
@@ -165,7 +195,7 @@ const Contact: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="subject" className="block mb-2 text-sm font-medium text-gray-700">
                   Subject
                 </label>
                 <select
@@ -187,7 +217,7 @@ const Contact: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-700">
                   Message
                 </label>
                 <textarea
@@ -204,15 +234,39 @@ const Contact: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                disabled={isSending}
+                className={`flex items-center justify-center w-full px-6 py-3 space-x-2 font-semibold text-white rounded-lg transition-colors ${
+                  isSending ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                }`}
               >
-                <Send className="h-5 w-5" />
-                <span>Send Message</span>
+                <Send className="w-5 h-5" />
+                <span>{isSending ? 'Sending...' : 'Send Message'}</span>
               </button>
             </form>
           </div>
         </div>
       </div>
+
+      {/* Success Popup */}
+      {showSuccessPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-full max-w-sm p-6 text-center bg-white rounded-lg shadow-xl">
+            <div className="mb-4 text-green-600">
+              <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <h3 className="mb-2 text-xl font-semibold text-gray-900">Message Sent!</h3>
+            <p className="mb-4 text-gray-600">Thank you for your message. We'll get back to you soon.</p>
+            <button
+              onClick={() => setShowSuccessPopup(false)}
+              className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -189,4 +189,99 @@ router.get('/event/:eventId', authenticateToken, async (req, res) => {
   }
 });
 
+
+// POST endpoint for contact form submission
+router.post('/send-email', async (req, res) => {
+  const { name, email, subject, message, to } = req.body;
+
+  // Validate request
+  if (!name || !email || !subject || !message || !to) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  // Email options
+  const mailOptions = {
+    from: '"Planora Support" <fueltrixteam@gmail.com>', // Display name with authenticated Gmail
+    to: to, // Admin email: thisara.a2001@gmail.com
+    subject: `New Contact Form Submission: ${subject}`,
+    text: `
+      Name: ${name}
+      Email: ${email}
+      Subject: ${subject}
+      Message: ${message}
+    `,
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+      <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333;">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 20px auto;">
+          <!-- Header -->
+          <tr>
+            <td style="background: linear-gradient(to right, #2563eb, #7e22ce); padding: 20px; text-align: center; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+              <h1 style="color: #ffffff; font-size: 24px; margin: 10px 0;">New Contact Form Submission</h1>
+            </td>
+          </tr>
+          <!-- Body -->
+          <tr>
+            <td style="padding: 20px;">
+              <h2 style="font-size: 20px; color: #1f2937; margin-bottom: 20px;">Message Details</h2>
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="padding: 10px 0; font-size: 16px;">
+                    <strong style="color: #1f2937;">Name:</strong>
+                    <span style="color: #4b5563;">${name}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; font-size: 16px;">
+                    <strong style="color: #1f2937;">Email:</strong>
+                    <span style="color: #4b5563;">${email}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; font-size: 16px;">
+                    <strong style="color: #1f2937;">Subject:</strong>
+                    <span style="color: #4b5563;">${subject}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 0; font-size: 16px;">
+                    <strong style="color: #1f2937;">Message:</strong>
+                    <p style="color: #4b5563; line-height: 1.5; margin: 0;">${message}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td style="background-color: #f4f4f9; padding: 20px; text-align: center; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
+              <p style="color: #6b7280; font-size: 14px; margin: 0;">
+                Sent from <a href="https://yourwebsite.com" style="color: #2563eb; text-decoration: none;">Planora</a>
+              </p>
+              <p style="color: #6b7280; font-size: 14px; margin: 10px 0 0;">
+                123 Event Street, Colombo, Sri Lanka
+              </p>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `,
+  };
+
+  try {
+    // Send email
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: 'Email sent successfully' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({ message: 'Failed to send email' });
+  }
+});
+
 export default router;
