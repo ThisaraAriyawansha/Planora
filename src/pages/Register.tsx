@@ -61,7 +61,7 @@ const Register: React.FC = () => {
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center">
-          <Link to="/" className="inline-flex items-center mb-4 space-x-2">
+          <Link to="/" className="inline-flex items-center hidden mb-4 space-x-2">
             <Calendar className="w-8 h-8 text-blue-600" />
             <span className="text-2xl font-bold text-gray-900">Planora</span>
           </Link>

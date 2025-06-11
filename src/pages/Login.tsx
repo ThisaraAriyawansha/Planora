@@ -42,7 +42,7 @@ const Login: React.FC = () => {
       <div className="w-full max-w-md space-y-8">
         {/* Header */}
         <div className="text-center">
-          <Link to="/" className="flex items-center justify-center mb-6 space-x-2">
+          <Link to="/" className="flex items-center justify-center hidden mb-6 space-x-2">
             <Calendar className="w-10 h-10 text-blue-600" />
             <span className="text-3xl font-bold text-gray-900">Planora</span>
           </Link>
@@ -124,7 +124,7 @@ const Login: React.FC = () => {
         </div>
 
         {/* Demo Accounts */}
-        <div className="p-4 rounded-lg bg-gray-50">
+        <div className="hidden p-4 rounded-lg bg-gray-50">
           <h3 className="mb-2 text-sm font-medium text-gray-700">Demo Accounts:</h3>
           <div className="space-y-1 text-xs text-gray-600">
             <p><strong>Admin:</strong> admin@gmail.com / password-12345678</p>
