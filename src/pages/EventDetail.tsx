@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Calendar, MapPin, Users, Clock, User, ArrowLeft, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Event {
   id: number;
@@ -88,26 +89,52 @@ const EventDetail: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="w-12 h-12 border-4 border-gray-200 rounded-full border-t-gray-900 animate-spin"></div>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="flex items-center justify-center min-h-screen bg-gray-100"
+      >
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+          className="w-12 h-12 border-4 border-gray-200 rounded-full border-t-gray-900"
+        ></motion.div>
+      </motion.div>
     );
   }
 
   if (!event) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="flex items-center justify-center min-h-screen bg-gray-100"
+      >
         <div className="text-center">
-          <h2 className="mb-6 text-4xl font-semibold text-gray-900">Event Not Found</h2>
-          <button
+          <motion.h2 
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="mb-6 text-4xl font-semibold text-gray-900"
+          >
+            Event Not Found
+          </motion.h2>
+          <motion.button
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
             onClick={() => navigate('/events')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             className="inline-flex items-center px-6 py-3 text-base font-medium text-white transition-all duration-300 bg-gray-900 rounded-full hover:bg-gray-800"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Back to Events
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
@@ -115,35 +142,62 @@ const EventDetail: React.FC = () => {
   const spotsLeft = event.capacity - event.registrations_count;
 
   return (
-    <div className="min-h-screen font-sans bg-gray-100">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen font-sans bg-gray-100"
+    >
       {/* Hero Section */}
       <div className="relative w-full h-[70vh] min-h-[500px]">
         {event.main_image ? (
-          <img
+          <motion.img
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
             src={`http://localhost:5000${event.main_image}`}
             alt={event.title}
             className="object-cover w-full h-full"
           />
         ) : (
-          <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-gray-900 to-gray-700">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex items-center justify-center w-full h-full bg-gradient-to-br from-gray-900 to-gray-700"
+          >
             <Calendar className="w-24 h-24 text-white opacity-30" />
-          </div>
+          </motion.div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
         <div className="absolute inset-x-0 bottom-0 px-6 py-12 sm:px-8">
           <div className="max-w-6xl mx-auto">
-            <button
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { delay: 0.3 } }}
               onClick={() => navigate('/events')}
+              whileHover={{ x: -5 }}
               className="inline-flex items-center mb-6 text-gray-200 transition-colors duration-300 hover:text-white"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
               Back to Events
-            </button>
-            <h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl md:text-6xl">{event.title}</h1>
+            </motion.button>
+            
+            <motion.h1
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1, transition: { delay: 0.4 } }}
+              className="text-4xl font-semibold leading-tight text-white sm:text-5xl md:text-6xl"
+            >
+              {event.title}
+            </motion.h1>
+            
             {event.category && (
-              <span className="inline-block px-4 py-1 mt-4 text-sm font-medium text-white rounded-full bg-white/10 backdrop-blur-sm">
+              <motion.span
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1, transition: { delay: 0.5 } }}
+                className="inline-block px-4 py-1 mt-4 text-sm font-medium text-white rounded-full bg-white/10 backdrop-blur-sm"
+              >
                 {event.category}
-              </span>
+              </motion.span>
             )}
           </div>
         </div>
@@ -151,11 +205,21 @@ const EventDetail: React.FC = () => {
 
       {/* Main Content */}
       <div className="max-w-6xl px-4 py-16 mx-auto px livelli 10px-12 sm:px-6 lg:px-8">
-        <div className="p-8 bg-white shadow-lg rounded-3xl">
+        <motion.div 
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="p-8 bg-white shadow-lg rounded-3xl"
+        >
           {/* Event Info */}
           <div className="grid gap-8 md:grid-cols-2">
             <div className="space-y-8">
-              <div className="flex items-start">
+              <motion.div 
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.7 }}
+                className="flex items-start"
+              >
                 <Clock className="w-6 h-6 mt-1 mr-4 text-gray-900" />
                 <div>
                   <p className="text-lg font-semibold text-gray-900">
@@ -168,14 +232,24 @@ const EventDetail: React.FC = () => {
                   </p>
                   <p className="text-sm text-gray-500">{event.time}</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex items-start">
+              <motion.div 
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="flex items-start"
+              >
                 <MapPin className="w-6 h-6 mt-1 mr-4 text-gray-900" />
                 <p className="text-lg text-gray-900">{event.location}</p>
-              </div>
+              </motion.div>
 
-              <div className="flex items-start">
+              <motion.div 
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.9 }}
+                className="flex items-start"
+              >
                 <Users className="w-6 h-6 mt-1 mr-4 text-gray-900" />
                 <div>
                   <p className="text-lg font-semibold text-gray-900">
@@ -185,31 +259,55 @@ const EventDetail: React.FC = () => {
                     {spotsLeft > 0 ? `${spotsLeft} spots left` : 'Event is full'}
                   </p>
                 </div>
-              </div>
+              </motion.div>
 
               {event.organizer_name && (
-                <div className="flex items-start">
+                <motion.div 
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 1.0 }}
+                  className="flex items-start"
+                >
                   <User className="w-6 h-6 mt-1 mr-4 text-gray-900" />
                   <div>
                     <p className="text-lg font-semibold text-gray-900">Organized by</p>
                     <p className="text-sm text-gray-500">{event.organizer_name}</p>
                   </div>
-                </div>
+                </motion.div>
               )}
             </div>
 
-            <div className="flex items-center justify-center">
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 1.1 }}
+              className="flex items-center justify-center"
+            >
               {registered ? (
-                <div className="text-center animate-fade-in">
-                  <CheckCircle className="w-16 h-16 mx-auto mb-4 text-green-600" />
+                <motion.div 
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="text-center"
+                >
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.1, 1],
+                      rotate: [0, 10, -10, 0]
+                    }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <CheckCircle className="w-16 h-16 mx-auto mb-4 text-green-600" />
+                  </motion.div>
                   <p className="mb-2 text-xl font-semibold text-gray-900">You're Registered!</p>
                   <p className="text-sm text-gray-500">We'll see you at the event</p>
-                </div>
+                </motion.div>
               ) : (
-                <button
+                <motion.button
                   onClick={handleRegister}
                   disabled={registering || isEventFull || !user}
-                  className={`px-8 py-4 rounded-full font-semibold text-base transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-200 ${
+                  whileHover={!isEventFull && user ? { scale: 1.05 } : {}}
+                  whileTap={!isEventFull && user ? { scale: 0.95 } : {}}
+                  className={`px-8 py-4 rounded-full font-semibold text-base transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gray-200 ${
                     isEventFull
                       ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
                       : !user
@@ -218,7 +316,12 @@ const EventDetail: React.FC = () => {
                   }`}
                 >
                   {registering ? (
-                    'Registering...'
+                    <motion.span
+                      animate={{ opacity: [0.6, 1, 0.6] }}
+                      transition={{ repeat: Infinity, duration: 1.5 }}
+                    >
+                      Registering...
+                    </motion.span>
                   ) : isEventFull ? (
                     'Event Full'
                   ) : !user ? (
@@ -226,28 +329,55 @@ const EventDetail: React.FC = () => {
                   ) : (
                     'Register Now'
                   )}
-                </button>
+                </motion.button>
               )}
-            </div>
+            </motion.div>
           </div>
 
           {/* Event Description */}
-          <div className="pt-10 mt-10 border-t border-gray-200">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="pt-10 mt-10 border-t border-gray-200"
+          >
             <h2 className="mb-6 text-2xl font-semibold text-gray-900">About This Event</h2>
-            <p className="text-lg leading-relaxed text-gray-700">{event.description}</p>
-          </div>
-        </div>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.3 }}
+              className="text-lg leading-relaxed text-gray-700"
+            >
+              {event.description}
+            </motion.p>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Event Gallery */}
       {event.images && event.images.length > 0 && (
         <div className="w-full py-20 bg-white">
           <div className="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
-            <h2 className="mb-10 text-3xl font-semibold text-center text-gray-900">Event Gallery</h2>
+            <motion.h2 
+              initial={{ y: -20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mb-10 text-3xl font-semibold text-center text-gray-900"
+            >
+              Event Gallery
+            </motion.h2>
             <div className="flex flex-col items-center">
               {/* Main Image */}
               <div className="w-full max-w-5xl mx-auto mb-8">
-                <div className="relative overflow-hidden bg-white shadow-lg rounded-3xl">
+                <motion.div 
+                  key={currentImageIndex}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="relative overflow-hidden bg-white shadow-lg rounded-3xl"
+                >
                   <img
                     src={`http://localhost:5000${event.images[currentImageIndex]}`}
                     alt={`Event image ${currentImageIndex + 1}`}
@@ -256,15 +386,26 @@ const EventDetail: React.FC = () => {
                   <div className="absolute px-3 py-1 text-sm font-medium text-white bg-gray-900 rounded-full bottom-4 right-4 bg-opacity-70">
                     {currentImageIndex + 1} / {event.images.length}
                   </div>
-                </div>
+                </motion.div>
               </div>
               {/* Thumbnails */}
               <div className="w-full max-w-5xl mx-auto overflow-x-auto">
-                <div className="flex py-4 space-x-4">
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  className="flex py-4 space-x-4"
+                >
                   {event.images.map((image, index) => (
-                    <button
+                    <motion.button
                       key={index}
                       onClick={() => handleImageSelect(index)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 0.1 * index }}
                       className={`flex-shrink-0 w-20 h-20 sm:w-28 sm:h-28 rounded-xl overflow-hidden border-2 transition-all duration-300 ${
                         currentImageIndex === index ? 'border-gray-900 shadow-md' : 'border-gray-200 hover:border-gray-400'
                       }`}
@@ -274,35 +415,15 @@ const EventDetail: React.FC = () => {
                         alt={`Thumbnail ${index + 1}`}
                         className="object-cover w-full h-full"
                       />
-                    </button>
+                    </motion.button>
                   ))}
-                </div>
+                </motion.div>
               </div>
             </div>
           </div>
         </div>
       )}
-
-      {/* Custom Animation Styles */}
-      <style>{`
-        .animate-fade-in {
-          animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-        }
-      `}</style>
-    </div>
+    </motion.div>
   );
 };
 
