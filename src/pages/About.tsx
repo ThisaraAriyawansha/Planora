@@ -236,60 +236,60 @@ const About: React.FC = () => {
 
       {/* Team Section */}
       <section ref={teamRef} className="py-24 bg-gray-100">
-        <div className="max-w-6xl px-6 mx-auto">
-          <motion.div
-            className="mb-16 text-center"
-            variants={fadeInUp}
-            initial="hidden"
-            animate={teamInView ? 'visible' : 'hidden'}
-          >
-            <h2 className="mb-4 text-4xl font-semibold tracking-tight text-gray-900">Meet Our Team</h2>
-            <p className="text-lg text-gray-600">The passionate people behind Planora</p>
-          </motion.div>
+  <div className="max-w-6xl px-6 mx-auto">
+    <motion.div
+      className="mb-16 text-center"
+      variants={fadeInUp}
+      initial="hidden"
+      animate={teamInView ? 'visible' : 'hidden'}
+    >
+      <h2 className="mb-4 text-4xl font-semibold tracking-tight text-gray-900">Meet Our Team</h2>
+      <p className="text-lg text-gray-600">The passionate people behind Planora</p>
+    </motion.div>
 
-          <div className="grid gap-8 md:grid-cols-3">
-            {[
-              {
-                icon: <Users className="w-12 h-12 text-blue-500" />,
-                name: 'Sarah Johnson',
-                role: 'CEO & Founder',
-                description: 'Passionate about connecting communities through meaningful events and experiences.',
-                roleColor: 'text-blue-500',
-              },
-              {
-                icon: <Users className="w-12 h-12 text-green-500" />,
-                name: 'Michael Chen',
-                role: 'CTO',
-                description: 'Technology enthusiast focused on building scalable, user-friendly platforms.',
-                roleColor: 'text-green-500',
-              },
-              {
-                icon: <Users className="w-12 h-12 text-purple-500" />,
-                name: 'Emily Rodriguez',
-                role: 'Head of Community',
-                description: 'Dedicated to ensuring every user has an exceptional experience on our platform.',
-                roleColor: 'text-purple-500',
-              },
-            ].map((member, index) => (
-              <motion.div
-                key={index}
-                className="text-center"
-                variants={fadeInUp}
-                initial="hidden"
-                animate={teamInView ? 'visible' : 'hidden'}
-                transition={{ delay: index * 0.2 }}
-              >
-                <div className="flex items-center justify-center w-24 h-24 mx-auto mb-4 bg-white rounded-full shadow-sm">
-                  {member.icon}
-                </div>
-                <h3 className="mb-2 text-lg font-semibold text-gray-900">{member.name}</h3>
-                <p className={`mb-2 font-medium ${member.roleColor}`}>{member.role}</p>
-                <p className="text-sm text-gray-500">{member.description}</p>
-              </motion.div>
-            ))}
+    <div className="grid gap-8 md:grid-cols-3">
+      {[
+        {
+          icon: <Users className="w-12 h-12 text-blue-500" />,
+          name: 'Nimali Perera',
+          role: 'CEO & Founder',
+          description: 'Passionate about connecting communities through meaningful events and experiences.',
+          roleColor: 'text-blue-500',
+        },
+        {
+          icon: <Users className="w-12 h-12 text-green-500" />,
+          name: 'Kusal Fernando',
+          role: 'CTO',
+          description: 'Technology enthusiast focused on building scalable, user-friendly platforms.',
+          roleColor: 'text-green-500',
+        },
+        {
+          icon: <Users className="w-12 h-12 text-purple-500" />,
+          name: 'Amaya Silva',
+          role: 'Head of Community',
+          description: 'Dedicated to ensuring every user has an exceptional experience on our platform.',
+          roleColor: 'text-purple-500',
+        },
+      ].map((member, index) => (
+        <motion.div
+          key={index}
+          className="text-center"
+          variants={fadeInUp}
+          initial="hidden"
+          animate={teamInView ? 'visible' : 'hidden'}
+          transition={{ delay: index * 0.2 }}
+        >
+          <div className="flex items-center justify-center w-24 h-24 mx-auto mb-4 bg-white rounded-full shadow-sm">
+            {member.icon}
           </div>
-        </div>
-      </section>
+          <h3 className="mb-2 text-lg font-semibold text-gray-900">{member.name}</h3>
+          <p className={`mb-2 font-medium ${member.roleColor}`}>{member.role}</p>
+          <p className="text-sm text-gray-500">{member.description}</p>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section ref={ctaRef} className="py-24 bg-gradient-to-br from-gray-800 to-gray-900">
