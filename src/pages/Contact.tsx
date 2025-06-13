@@ -32,7 +32,7 @@ const Contact: React.FC = () => {
         },
         body: JSON.stringify({
           ...formData,
-          to: 'thisara.a2001@gmail.com', // Admin email
+          to: 'admin@gmail.com', // Admin email
         }),
       });
 
